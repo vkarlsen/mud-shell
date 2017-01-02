@@ -1,3 +1,4 @@
+#!/usr/bin/env perl
 #MUD Shell
 #(C)2001 Dean "Gandalf" Swift and Xirium
 #
