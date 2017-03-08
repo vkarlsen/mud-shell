@@ -109,7 +109,7 @@ Is there any reason why a shell (or command line) cannot be as tolerant or as in
 
 If you want to use mudsh as a default login shell, you may need to edit /etc/shells. In summary:
 
-    # mv ~user/download/mudsh /bin/mudsh
+    # mv ~user/download/mudsh.pl /bin/mudsh
     # chown bin:bin /bin/mudsh
     # chmod 755 /bin/mudsh
     # echo /bin/mudsh >> /etc/shells
