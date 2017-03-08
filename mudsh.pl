@@ -642,6 +642,8 @@ sub parse
 #If an exit command is encountered, &parse returns an exit value.
 #Accumulated experience points are displayed before termination.
 
+$SIG{INT} = 'IGNORE';
+
 print("\@\@\@\\       /\@\@\@  Version 1.2:     \@\@\@   o\@\@\@\@\@o   \@\@\@  (C)2001 Xirium   \@\@\@ \@\@\@\n");
 print("\@\@\@\@\\     /\@\@\@\@  PointyStick      \@\@\@ /\@\@\@\@\@\@\@\@\@\\ \@\@\@  and Dean Swift   \@\@\@ \@\@\@\n");
 print("\@\@\@\@\@\\   /\@\@\@\@\@                   \@\@\@ \@\@\@'   `\@\@\@ \@\@\@                   \@\@\@ \@\@\@\n");
@@ -655,16 +657,16 @@ print("\@\@\@         \@\@\@ \\\@\@\@\@\@\@\@\@\@ \\\@\@\@\@\@\@\@\@\@ \\\@\@\@\
 print("\@\@\@         \@\@\@   *\@\@\@P\@\@\@   *\@\@\@P\@\@\@   *\@\@\@\@\@*   \@\@\@    \@\@\@   *\@\@\@\@\@\@  \@\@\@ \@\@\@\n");
 &disp("You are logged in as Guest.");
 if($0!~/^\-/)
- {
- #this is not a login shell therefore allows external commands to be run
- $exec_flag=1;
- }
+{
+	#this is not a login shell therefore allows external commands to be run
+	$exec_flag=1;
+}
 @temp=`ps`;
 if(scalar(@temp)<=3)
- {
- #there are too few tasks for this not to be a login shell
- $exec_flag=0;
- }
+{
+	#there are too few tasks for this not to be a login shell
+	$exec_flag=0;
+}
 &conf_read($0); #reads self for configuration
 &conf_read("/etc/mudshrc");
 &conf_read("/opt/xirium/mudsh/conf");
@@ -676,31 +678,32 @@ $cwd=~s/\n//;
 &describe();
 $continue=1;
 while($continue)
- {
- &disp_space();
- print("mudsh - $cwd > ");
- $buffer=<>;
- $buffer=~s/[\n\r]*$//g;
- $buffer=~s/\t/ /g;
- $buffer=~s/ +/ /g;
- $buffer=~s/^ //;
- $buffer=~s/ $//;
- if($buffer=~/^!/)
-  {
-  if($exec_flag!=1)
-   {
-   &disp("A wizard prevents your action.");
-   }
-  else
-   {
-   $buffer=~s/^!//;
-   system($buffer);
-   }
-  }
- else
-  {
-  @line=split(/ /,$buffer);
-  $continue=&parse(\@line);
-  }
- }
+{
+	&disp_space();
+	print("mudsh - $cwd > ");
+	$buffer=<>;
+	last unless defined $buffer;
+	$buffer=~s/[\n\r]*$//g;
+	$buffer=~s/\t/ /g;
+	$buffer=~s/ +/ /g;
+	$buffer=~s/^ //;
+	$buffer=~s/ $//;
+	if($buffer=~/^!/)
+	{
+		if($exec_flag!=1)
+		{
+			&disp("A wizard prevents your action.");
+		}
+		else
+		{
+			$buffer=~s/^!//;
+			system($buffer);
+		}
+	}
+	else
+	{
+		@line=split(/ /,$buffer);
+		$continue=&parse(\@line);
+	}
+}
 &disp("Experience points gained this session: $xp. Experience points are earned by actions, but mostly by killing things.");

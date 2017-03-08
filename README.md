@@ -103,32 +103,15 @@ Is there any reason why a shell (or command line) cannot be as tolerant or as in
 ## Installation
 
 ### Dependencies
-- PERL 5
-
-### Using Install Script
-    
-    $ ./install
-    
-This will generate a proper #! header for your system using `which perl` and install mudsh to the same directory. Then,
-
-    $ mudsh
-    
-If for some reason this does not work for your system, you'll need to edit the files yourself. See ./install for instructions.
+- Perl 5
 
 ### Using mudsh as the Default Login Shell
 
 If you want to use mudsh as a default login shell, you may need to edit /etc/shells. In summary:
 
-    $ sudo su
-    password:
     # mv ~user/download/mudsh /bin/mudsh
-    # whereis perl
-    perl: /usr/bin/perl5.00503 /usr/bin/perl /usr/man/man1/perl.1.gz
-    # vi /bin/mudsh
-    # chown bin.bin /bin/mudsh
+    # chown bin:bin /bin/mudsh
     # chmod 755 /bin/mudsh
     # echo /bin/mudsh >> /etc/shells
-    # exit
-    $ /bin/mudsh
 
 If you want to change or add descriptions, edit the source or litter .mudshrc files in your filing system. Any improvements improve the program or automate the install are welcome. Feel free to make a pull request.
